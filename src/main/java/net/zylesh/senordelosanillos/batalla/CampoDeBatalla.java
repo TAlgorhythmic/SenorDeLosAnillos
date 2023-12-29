@@ -155,6 +155,8 @@ public final class CampoDeBatalla {
         turno++;
         Entidad entidad = null;
         while (entidad == null) {
+            if (equipoHeroes.containsKey(turno) && !equipoHeroes.get(turno).isAlive()) turno++; // Arreglar un error en el que se quedaba para siempre estancado en el turno 1 si estaba muerto.
+            if (equipoBestias.containsKey(turno) && !equipoBestias.get(turno).isAlive()) turno++; // ~~
             if (equipoHeroes.containsKey(turno) && equipoHeroes.get(turno).isAlive()) entidad = equipoHeroes.get(turno);
             else if (equipoBestias.containsKey(turno) && equipoBestias.get(turno).isAlive()) entidad = equipoBestias.get(turno);
             else turno = 1;
