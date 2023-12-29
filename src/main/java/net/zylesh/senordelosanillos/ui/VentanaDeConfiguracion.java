@@ -32,12 +32,12 @@ public class VentanaDeConfiguracion extends JFrame {
     private final Map<JComboBox<Personaje>, Integer> casillas = new HashMap<>();
     private File fondo = CampoDeBatalla.fondosBasicos[0];
 
-    JButton e1 = new JButton("Definir*");
-    JButton e2 = new JButton("Definir*");
-    JButton e3 = new JButton("Definir*");
-    JButton e4 = new JButton("Definir*");
-    JButton e5 = new JButton("Definir*");
-    JButton e6 = new JButton("Definir*");
+    final JButton e1 = new JButton("Definir*");
+    final JButton e2 = new JButton("Definir*");
+    final JButton e3 = new JButton("Definir*");
+    final JButton e4 = new JButton("Definir*");
+    final JButton e5 = new JButton("Definir*");
+    final JButton e6 = new JButton("Definir*");
 
     public VentanaDeConfiguracion() {
         Dimension dim = new Dimension(540, 550);
@@ -437,8 +437,9 @@ public class VentanaDeConfiguracion extends JFrame {
                     File file = new File(dialog.getDirectory(), dialog.getFile());
                     imgLabel.setText(file.getAbsolutePath());
                     try {
-                        if (ImageIO.read(file) == null) throw new IOException("No se puede leer la imágen.");
-                        personaje.setImagen(file);
+                        BufferedImage img;
+                        if ((img = ImageIO.read(file)) == null) throw new IOException("No se puede leer la imágen.");
+                        personaje.setImagen(img);
                     } catch (IOException o) {
                         VentanaDeInformacion.mostrarVentana(VentanaDeInformacion.ERROR, "Error al leer imágen", "Ha habido un error al leer la imágen.", "Asegúrate de que el archivo es una imágen y no está corrupto.");
                     }

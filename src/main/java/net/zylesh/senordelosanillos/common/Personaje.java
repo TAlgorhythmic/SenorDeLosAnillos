@@ -6,7 +6,11 @@ import net.zylesh.senordelosanillos.common.heroes.Elfo;
 import net.zylesh.senordelosanillos.common.heroes.Hobbit;
 import net.zylesh.senordelosanillos.common.heroes.Humano;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Personaje {
 
@@ -15,31 +19,31 @@ public class Personaje {
     public static final Personaje[] presetsBestias = new Personaje[4];
     static {
         try {
-            presetsHeroes[0] = new Personaje("Gandalf", Humano.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "gandalf.png").getFile()));
-            presetsHeroes[1] = new Personaje("Aragorn", Humano.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "aragorn.png").getFile()));
-            presetsHeroes[2] = new Personaje("Frodo", Hobbit.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "frodo.png").getFile()));
-            presetsHeroes[3] = new Personaje("Légolas", Elfo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "legolas.png").getFile()));
-            presetsHeroes[4] = new Personaje("Samwise", Hobbit.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "samwise.png").getFile()));
-            presetsHeroes[5] = new Personaje("Elrond", Elfo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "elrond.png").getFile()));
-            presetsBestias[0] = new Personaje("Orco 1", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco1.png").getFile()));
-            presetsBestias[1] = new Personaje("Orco 2", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco2.png").getFile()));
-            presetsBestias[2] = new Personaje("Orco 3", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco3.png").getFile()));
-            presetsBestias[3] = new Personaje("Trasgo", Trasgo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "trasgo1.png").getFile()));
+            presetsHeroes[0] = new Personaje("Gandalf", Humano.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "gandalf.png"));
+            presetsHeroes[1] = new Personaje("Aragorn", Humano.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "aragorn.png"));
+            presetsHeroes[2] = new Personaje("Frodo", Hobbit.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "frodo.png"));
+            presetsHeroes[3] = new Personaje("Légolas", Elfo.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "legolas.png"));
+            presetsHeroes[4] = new Personaje("Samwise", Hobbit.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "samwise.png"));
+            presetsHeroes[5] = new Personaje("Elrond", Elfo.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "elrond.png"));
+            presetsBestias[0] = new Personaje("Orco 1", Orco.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco1.png"));
+            presetsBestias[1] = new Personaje("Orco 2", Orco.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco2.png"));
+            presetsBestias[2] = new Personaje("Orco 3", Orco.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco3.png"));
+            presetsBestias[3] = new Personaje("Trasgo", Trasgo.class, Personaje.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "trasgo1.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private String nombre;
-    private File imagen;
+    private BufferedImage imagen;
     private String tipo;
     private Entidad entidad;
 
     public Personaje() {}
 
-    public Personaje(String nombre, Class<? extends Entidad> tipo, File imagen) {
+    public Personaje(String nombre, Class<? extends Entidad> tipo, InputStream imagen) throws IOException {
         this.nombre = nombre;
-        this.imagen = imagen;
+        this.imagen = ImageIO.read(imagen);
         this.tipo = tipo.getName();
     }
 
@@ -57,7 +61,7 @@ public class Personaje {
         return null;
     }
 
-    public File getImagen() {
+    public BufferedImage getImagen() {
         return imagen;
     }
 
@@ -73,7 +77,7 @@ public class Personaje {
         this.tipo = tipo;
     }
 
-    public void setImagen(File imagen) {
+    public void setImagen(BufferedImage imagen) {
         this.imagen = imagen;
     }
 

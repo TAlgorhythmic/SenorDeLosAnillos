@@ -75,7 +75,7 @@ public class GameWindow extends JFrame {
 
     /**
      * Envía un nuevo mensaje de output, se guarda en el archivo de log también.
-     * @param mensaje
+     * @param mensaje mensaje para enviar.
      */
     public void nuevoOutput(String mensaje) {
         outputDelJuego.add(mensaje);
@@ -143,7 +143,9 @@ public class GameWindow extends JFrame {
             this.b2 = new PersonajeLabel(campoDeBatalla.getBestia2());
             this.b3 = new PersonajeLabel(campoDeBatalla.getBestia3());
             this.fondo = new FondoLabel(campoDeBatalla);
-        } catch (IOException ignored) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.barraLabel = new JLabel(new ImageIcon(barra));
         this.outputDelJuego.setPreferredSize(new Dimension(360, 180));
         this.textInfo = new JLabel("Pulsa espacio para comenzar");
@@ -184,6 +186,7 @@ public class GameWindow extends JFrame {
      * Intento fallido de hacer un loop para actualizar ventana constantemente, al parecer java swing no está hecho para esto y tiraba muchos errores internos,
      * así que este método solo hace unas pocas cosas como remover personajes muertos, actualizar posiciones si es necesario, inicializar y cerrar al terminar.
      */
+    @SuppressWarnings("unchecked")
     public void gameLoop() {
         final Iterator<BufferedImage>[] iterator = new Iterator[]{null};
         final JLabel[] labelSword = new JLabel[] {null};

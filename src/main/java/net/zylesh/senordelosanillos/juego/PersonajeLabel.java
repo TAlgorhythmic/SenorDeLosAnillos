@@ -3,7 +3,6 @@ package net.zylesh.senordelosanillos.juego;
 import net.zylesh.senordelosanillos.common.Entidad;
 import net.zylesh.senordelosanillos.common.Personaje;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,8 +22,8 @@ public class PersonajeLabel extends JLabel {
         init(entidad.getPersonaje());
     }
 
-    private void init(Personaje personaje) throws IOException {
-        BufferedImage originalImage = ImageIO.read(personaje.getImagen());
+    private void init(Personaje personaje) {
+        BufferedImage originalImage = personaje.getImagen();
         double p = ((height * 100.0) / originalImage.getHeight());
         int width = (int) (originalImage.getWidth() * (p / 100.0));
         BufferedImage newImg = new BufferedImage(width, height, originalImage.getType());
