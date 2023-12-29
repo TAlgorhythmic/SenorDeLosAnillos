@@ -22,9 +22,9 @@ public final class CampoDeBatalla {
     public static final File[] fondosBasicos = new File[3];
     static {
         try {
-            File background1 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background1.jpg").toURI());
-            File background2 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background2.jpg").toURI());
-            File background3 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background3.jpg").toURI());
+            File background1 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background1.jpg").getFile());
+            File background2 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background2.jpg").getFile());
+            File background3 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background3.jpg").getFile());
             fondosBasicos[0] = background1;
             fondosBasicos[1] = background2;
             fondosBasicos[2] = background3;
