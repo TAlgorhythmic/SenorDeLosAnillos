@@ -30,7 +30,7 @@ public class VentanaDeConfiguracion extends JFrame {
 
     private final Map<Integer, Personaje> posiciones = new HashMap<>();
     private final Map<JComboBox<Personaje>, Integer> casillas = new HashMap<>();
-    private File fondo = CampoDeBatalla.fondosBasicos[0];
+    private BufferedImage fondo = CampoDeBatalla.fondosBasicos[0];
 
     final JButton e1 = new JButton("Definir*");
     final JButton e2 = new JButton("Definir*");
@@ -210,7 +210,7 @@ public class VentanaDeConfiguracion extends JFrame {
                     File f = new File((String) e.getItem());
                     BufferedImage result = ImageIO.read(f);
                     if (result != null) {
-                        fondo = f;
+                        fondo = result;
                         return;
                     }
                     throw new IOException("No se pudo leer la imagen, o no existe.");

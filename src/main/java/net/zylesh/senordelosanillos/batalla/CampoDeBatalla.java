@@ -12,6 +12,8 @@ import net.zylesh.senordelosanillos.juego.GameWindow;
 import net.zylesh.senordelosanillos.ui.VentanaDeInformacion;
 import net.zylesh.senordelosanillos.ui.VentanaPrincipal;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -19,12 +21,12 @@ import java.util.*;
 public final class CampoDeBatalla {
 
     // Fondos predefinidos. En la configuración se puede usar un fondo propio también. Lo cambié a un array ya que no se por qué motivo usé un hashmap en un caso así.
-    public static final File[] fondosBasicos = new File[3];
+    public static final BufferedImage[] fondosBasicos = new BufferedImage[3];
     static {
         try {
-            File background1 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background1.jpg").getFile());
-            File background2 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background2.jpg").getFile());
-            File background3 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background3.jpg").getFile());
+            BufferedImage background1 = ImageIO.read(CampoDeBatalla.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background1.jpg"));
+            BufferedImage background2 = ImageIO.read(CampoDeBatalla.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background2.jpg"));
+            BufferedImage background3 = ImageIO.read(CampoDeBatalla.class.getClassLoader().getResourceAsStream("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background3.jpg"));
             fondosBasicos[0] = background1;
             fondosBasicos[1] = background2;
             fondosBasicos[2] = background3;
@@ -51,7 +53,7 @@ public final class CampoDeBatalla {
         Personaje pb1 = Personaje.presetsBestias[r.nextInt(max)];
         Personaje pb2 = Personaje.presetsBestias[r.nextInt(max)];
         Personaje pb3 = Personaje.presetsBestias[r.nextInt(max)];
-        File fondo = fondoAleatorio();
+        BufferedImage fondo = fondoAleatorio();
         Heroe heroe1 = (Heroe) generarEntidadAleatoriamente(ph1);
         Heroe heroe2 = (Heroe) generarEntidadAleatoriamente(ph2);
         Heroe heroe3 = (Heroe) generarEntidadAleatoriamente(ph3);
@@ -74,7 +76,7 @@ public final class CampoDeBatalla {
         return null;
     }
 
-    private static File fondoAleatorio() {
+    private static BufferedImage fondoAleatorio() {
         int num = r.nextInt(3);
         return fondosBasicos[num];
     }
@@ -82,11 +84,11 @@ public final class CampoDeBatalla {
     private final static Map<Integer, Heroe> equipoHeroes = new LinkedHashMap<>();
     private final static Map<Integer, Bestia> equipoBestias = new LinkedHashMap<>();
     private int turno = 0;
-    private final File fondo;
+    private final BufferedImage fondo;
     private Entidad entidadEnAccion;
     private static final Timer timer = new Timer();
 
-    public File getFondo() {
+    public BufferedImage getFondo() {
         return fondo;
     }
 
@@ -194,7 +196,7 @@ public final class CampoDeBatalla {
 
     public static class CampoDeBatallaConfig {
 
-        private static File fondo;
+        private static BufferedImage fondo;
         private static CampoDeBatalla campoDeBatallaActivo = null;
 
         private CampoDeBatallaConfig() {}
