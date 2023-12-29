@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Clase padre para todos los tipos de entidad. Maneja la vida, la resistencia, el daño y guarda una instancia de los atributos de personaje (por mera dependencia)
+ */
 public abstract class Entidad {
 
     private Personaje personaje;
@@ -23,7 +26,6 @@ public abstract class Entidad {
         }
     };
     protected boolean isAlive = true;
-    protected String identificadorTipo;
 
     private static String toString0(Set<Habilidad> lista) {
         StringBuilder builder = new StringBuilder();
@@ -54,6 +56,10 @@ public abstract class Entidad {
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public Set<DeBuffo> getDeBuffos() {
+        return deBuffos;
     }
 
     public void setAlive(boolean alive) {

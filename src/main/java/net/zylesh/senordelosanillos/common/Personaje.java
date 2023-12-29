@@ -7,31 +7,27 @@ import net.zylesh.senordelosanillos.common.heroes.Hobbit;
 import net.zylesh.senordelosanillos.common.heroes.Humano;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class Personaje {
 
-    public static final Set<Personaje> presets;
+    // Personajes predefinidos, lo cambié a arrays (había puesto HashSets por algún motivo). ¡NO MODIFICAR SU CONTENIDO O EL PROGRAMA DARÁ ERRORES!
+    public static final Personaje[] presetsHeroes = new Personaje[6];
+    public static final Personaje[] presetsBestias = new Personaje[4];
     static {
-        Set<Personaje> p = new LinkedHashSet<>();
         try {
-            Personaje p1 = new Personaje("Gandalf", Humano.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "gandalf.png").toURI()));
-            Personaje p2 = new Personaje("Aragorn", Humano.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "aragorn.png").toURI()));
-            Personaje p3 = new Personaje("Frodo", Hobbit.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "frodo.png").toURI()));
-            Personaje p4 = new Personaje("Légolas", Elfo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "legolas.png").toURI()));
-            Personaje p5 = new Personaje("Samwise", Hobbit.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "samwise.png").toURI()));
-            Personaje p6 = new Personaje("Elrond", Elfo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "elrond.png").toURI()));
-            Personaje p7 = new Personaje("Orco 1", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco1.png").toURI()));
-            Personaje p8 = new Personaje("Orco 2", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco2.png").toURI()));
-            Personaje p9 = new Personaje("Orco 3", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco3.png").toURI()));
-            Personaje p10 = new Personaje("Trasgo", Trasgo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "trasgo1.png").toURI()));
-            Collections.addAll(p, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            presetsHeroes[0] = new Personaje("Gandalf", Humano.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "gandalf.png").toURI()));
+            presetsHeroes[1] = new Personaje("Aragorn", Humano.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "aragorn.png").toURI()));
+            presetsHeroes[2] = new Personaje("Frodo", Hobbit.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "frodo.png").toURI()));
+            presetsHeroes[3] = new Personaje("Légolas", Elfo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "legolas.png").toURI()));
+            presetsHeroes[4] = new Personaje("Samwise", Hobbit.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "samwise.png").toURI()));
+            presetsHeroes[5] = new Personaje("Elrond", Elfo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "elrond.png").toURI()));
+            presetsBestias[0] = new Personaje("Orco 1", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco1.png").toURI()));
+            presetsBestias[1] = new Personaje("Orco 2", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco2.png").toURI()));
+            presetsBestias[2] = new Personaje("Orco 3", Orco.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "orco3.png").toURI()));
+            presetsBestias[3] = new Personaje("Trasgo", Trasgo.class, new File(Personaje.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "personajes" + File.separator + "trasgo1.png").toURI()));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        presets = Collections.unmodifiableSet(p);
     }
 
     private String nombre;
@@ -51,6 +47,7 @@ public class Personaje {
         return nombre;
     }
 
+    @SuppressWarnings("unchecked")
     public Class<? extends Entidad> getTipo() {
         try {
             return (Class<? extends Entidad>) Class.forName(tipo);

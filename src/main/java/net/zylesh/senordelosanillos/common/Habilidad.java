@@ -4,6 +4,10 @@ import net.zylesh.senordelosanillos.common.debuffos.DeBuffo;
 
 import java.util.List;
 
+/**
+ * Clase de habilidades especiales, tienen soporte para mejorar o empeorar daño, resistencia e inflingir buffos/debuffos
+ * Al instanciar debe sobreescribir extraDamage(), extraResistance() o getBuffos().
+ */
 public abstract class Habilidad {
 
     private Entidad afectado;
@@ -17,19 +21,20 @@ public abstract class Habilidad {
         return nombre;
     }
 
+    // Must override
     public int extraDamage() {
         return 0;
     }
 
+    // Must override
     public int extraResistance() {
         return 0;
     }
 
+    // Must override
     public List<DeBuffo> getBuffos() {
         return null;
     }
-
-
 
     public void setAfectado(Entidad victima) {
         this.afectado = victima;

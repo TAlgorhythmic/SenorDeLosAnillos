@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+/**
+ * Implementación propia de diálogo simple.
+ */
 public class VentanaDeInformacion extends JFrame {
 
     public static final int INFO = 0;
@@ -16,18 +19,6 @@ public class VentanaDeInformacion extends JFrame {
     public static void mostrarVentana(int tipo, String titulo, String... mensaje) {
         VentanaDeInformacion f = new VentanaDeInformacion(tipo, titulo, mensaje);
         f.setVisible(true);
-        try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(VentanaDeInformacion.class.getClassLoader().getResourceAsStream("assets/sounds" + File.separator + "ting.wav"));
-            AudioFormat format = stream.getFormat();
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
-            Clip clip = (Clip) AudioSystem.getLine(info);
-            clip.open(stream);
-            clip.start();
-            clip.close();
-            stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private VentanaDeInformacion(int tipo, String titulo, String... mensaje) {

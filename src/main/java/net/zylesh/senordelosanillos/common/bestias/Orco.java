@@ -8,7 +8,8 @@ public final class Orco extends Bestia {
 
     public Orco(Personaje personaje, int vida, int resistencia) {
         super(personaje, vida, resistencia);
-        this.identificadorTipo = "Orco";
+
+        // Habilidad de fuerza desmesurada.
         this.habilidades.add(new Habilidad("Fuerza Desmesurada") {
             @Override
             public int extraDamage() {

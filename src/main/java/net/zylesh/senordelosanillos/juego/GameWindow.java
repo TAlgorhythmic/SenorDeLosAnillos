@@ -61,6 +61,9 @@ public class GameWindow extends JFrame {
         gameLoop();
     }
 
+    /**
+     * Inicializa una instancia de GameWindow si no existe y la devuelve.
+     */
     public static GameWindow g(CampoDeBatalla campoDeBatalla) {
         if (ventana == null) ventana = new GameWindow(campoDeBatalla);
         return ventana;
@@ -70,11 +73,18 @@ public class GameWindow extends JFrame {
         return ventana;
     }
 
+    /**
+     * Envía un nuevo mensaje de output, se guarda en el archivo de log también.
+     * @param mensaje
+     */
     public void nuevoOutput(String mensaje) {
         outputDelJuego.add(mensaje);
         Core.log(mensaje, true);
     }
 
+    /**
+     * Configurar componentes de ventana.
+     */
     public void configurar() {
         setIconImage(VentanaPrincipal.icon);
         setLayout(layout);
@@ -142,10 +152,17 @@ public class GameWindow extends JFrame {
     private boolean enAnimacion = false;
     private PersonajeLabel afectado;
 
+    /**
+     * Le dice al gameLoop que debería cerrar la ventana.
+     */
     public void close() {
         shouldClose = true;
     }
 
+    /**
+     * Intento fallido de crear animaciones para los ataques, al no ser posible el loop, tampoco es posible esto,
+     * pero este método sigue encargándose de actualizar atributos.
+     */
     public void animarAtaque(Entidad afectado) {
         PersonajeLabel victima;
         if (h1 != null && h1.getEntidad().equals(afectado)) victima = h1;
@@ -162,6 +179,11 @@ public class GameWindow extends JFrame {
     private boolean inicializando = true;
 
     private static final Timer timer = new Timer();
+
+    /**
+     * Intento fallido de hacer un loop para actualizar ventana constantemente, al parecer java swing no está hecho para esto y tiraba muchos errores internos,
+     * así que este método solo hace unas pocas cosas como remover personajes muertos, actualizar posiciones si es necesario, inicializar y cerrar al terminar.
+     */
     public void gameLoop() {
         final Iterator<BufferedImage>[] iterator = new Iterator[]{null};
         final JLabel[] labelSword = new JLabel[] {null};
@@ -208,10 +230,16 @@ public class GameWindow extends JFrame {
         }, 0L, 33L);
     }
 
+    /**
+     * Ventana en donde se visualiza el output del juego.
+     */
     public static class Output extends JFrame {
 
-        private static final int BASE_OFFSET = 10;
+        private static final int BASE_OFFSET = 10; // Distancia de píxeles base entre mensaje (para que quede más limpio).
+        private static final int OFFSET = 15; // Distancia de píxeles entre mensajes.
+
         private final SpringLayout layout = new SpringLayout();
+        // Almacena el mensaje de output, <"mensaje", "posición vertical">
         private final Map<JLabel, AtomicInteger> textos = new LinkedHashMap<>();
 
         public Output() {
@@ -224,10 +252,14 @@ public class GameWindow extends JFrame {
             setLayout(layout);
         }
 
+        /**
+         * Añadir mensaje, calcula automaticamente la posición que le toca y actualiza la de los otros mensajes.
+         * @param mensaje mensaje a añadir.
+         */
         public void add(String mensaje) {
             if (!textos.isEmpty()) {
                 for (JLabel label : textos.keySet()) {
-                    textos.get(label).getAndAdd(15);
+                    textos.get(label).getAndAdd(OFFSET);
                     layout.putConstraint(SpringLayout.NORTH, label, textos.get(label).get(), SpringLayout.NORTH, this);
                 }
             }

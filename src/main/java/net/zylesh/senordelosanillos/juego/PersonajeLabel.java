@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * Implementación propia de JLabel para definir un tamaño idéntico entre imágenes independientemente de su tamaño inicial.
+ */
 public class PersonajeLabel extends JLabel {
 
     private static final int height = 280;

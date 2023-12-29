@@ -3,6 +3,9 @@ package net.zylesh.senordelosanillos.ui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Ventana de créditos.
+ */
 public class Creditos extends JFrame {
 
     private final static Creditos f;

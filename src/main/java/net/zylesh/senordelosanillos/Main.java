@@ -1,6 +1,8 @@
 package net.zylesh.senordelosanillos;
 
-public final class Main {
+public class Main {
+
+    // Método main
     public static void main(String[] args) {
         Core.crearInterfaz();
     }

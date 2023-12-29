@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * Implementación propia de JLabel para establecer fondo de ventana.
+ */
 public class FondoLabel extends JLabel {
 
     public FondoLabel(CampoDeBatalla campoDeBatalla) throws IOException {

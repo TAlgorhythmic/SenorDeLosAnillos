@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class VentanaPrincipal extends JFrame {
 
+    // Botones predefinidos para no instanciarlos cada vez que se crea una instancia de VentanaPrincipal (aunque solo se crea una en el programa, pero igualmente me pareció que es una buena práctica).
     private static final JButton configCampoDeBatalla;
     public static final JButton comenzar;
     public static final JButton cerrar;
@@ -51,9 +52,17 @@ public class VentanaPrincipal extends JFrame {
         creditos.setHorizontalAlignment(SwingConstants.CENTER);
         creditos.setVerticalAlignment(SwingConstants.CENTER);
     }
+    // UI Inst finalizado.
 
+    // Uso mi propia instancia de un panel para añadir la imágen de fondo.
     private final Panel contenedor;
 
+    /**
+     * Crea una ventana principal para el programa, ofrece botones de créditos, configuración, empezar batalla y cerrar campo de batalla.
+     * Cerrar esta ventana terminará el programa independientemente de que haya un campo de batalla abierto o no.
+     * @throws IOException Ya que el constructor de la clase Panel tira un IOException, pues para no tener que manejar la excepción aquí y hacerlo en el método de crearInterfaz() de la clase Core,
+     * ya que hay otros métodos ahí que tambien tiran IOException y de esta manera manejarlos todos de una vez.
+     */
     public VentanaPrincipal() throws IOException {
         super();
         Dimension dim = new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.6), (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.8));

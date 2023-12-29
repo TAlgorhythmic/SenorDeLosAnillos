@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,14 +30,14 @@ public class VentanaDeConfiguracion extends JFrame {
 
     private final Map<Integer, Personaje> posiciones = new HashMap<>();
     private final Map<JComboBox<Personaje>, Integer> casillas = new HashMap<>();
-    private File fondo = CampoDeBatalla.fondosBasicos.get(1);
+    private File fondo = CampoDeBatalla.fondosBasicos[0];
 
-    JButton e1 = new JButton("Generar Entidad");
-    JButton e2 = new JButton("Generar Entidad");
-    JButton e3 = new JButton("Generar Entidad");
-    JButton e4 = new JButton("Generar Entidad");
-    JButton e5 = new JButton("Generar Entidad");
-    JButton e6 = new JButton("Generar Entidad");
+    JButton e1 = new JButton("Definir*");
+    JButton e2 = new JButton("Definir*");
+    JButton e3 = new JButton("Definir*");
+    JButton e4 = new JButton("Definir*");
+    JButton e5 = new JButton("Definir*");
+    JButton e6 = new JButton("Definir*");
 
     public VentanaDeConfiguracion() {
         Dimension dim = new Dimension(540, 550);
@@ -50,39 +51,44 @@ public class VentanaDeConfiguracion extends JFrame {
         setIconImage(VentanaPrincipal.icon);
         Dimension dim2 = new Dimension(320, 30);
         Personaje sample = new Personaje() {
+            /**
+             * Override para usar de selección default, esta instancia no es considerada un personaje.
+             */
             @Override
             public String toString() {
                 return "Escoje un personaje";
             }
         };
+
+        // Inicialización UI comienzo.
         JComboBox<Personaje> hbox1 = new JComboBox<>(); hbox1.setPreferredSize(dim2);
         hbox1.addItem(sample);
-        Personaje.presets.forEach(personaje -> {
+        Arrays.stream(Personaje.presetsHeroes).forEach(personaje -> {
             if (personaje.getTipo().getSuperclass().equals(Heroe.class)) hbox1.addItem(personaje);
         });
         JComboBox<Personaje> hbox2 = new JComboBox<>(); hbox2.setPreferredSize(dim2);
         hbox2.addItem(sample);
-        Personaje.presets.forEach(personaje -> {
+        Arrays.stream(Personaje.presetsHeroes).forEach(personaje -> {
             if (personaje.getTipo().getSuperclass().equals(Heroe.class)) hbox2.addItem(personaje);
         });
         JComboBox<Personaje> hbox3 = new JComboBox<>(); hbox3.setPreferredSize(dim2);
         hbox3.addItem(sample);
-        Personaje.presets.forEach(personaje -> {
+        Arrays.stream(Personaje.presetsHeroes).forEach(personaje -> {
             if (personaje.getTipo().getSuperclass().equals(Heroe.class)) hbox3.addItem(personaje);
         });
         JComboBox<Personaje> hbox4 = new JComboBox<>(); hbox4.setPreferredSize(dim2);
         hbox4.addItem(sample);
-        Personaje.presets.forEach(personaje -> {
+        Arrays.stream(Personaje.presetsBestias).forEach(personaje -> {
             if (personaje.getTipo().getSuperclass().equals(Bestia.class)) hbox4.addItem(personaje);
         });
         JComboBox<Personaje> hbox5 = new JComboBox<>(); hbox5.setPreferredSize(dim2);
         hbox5.addItem(sample);
-        Personaje.presets.forEach(personaje -> {
+        Arrays.stream(Personaje.presetsBestias).forEach(personaje -> {
             if (personaje.getTipo().getSuperclass().equals(Bestia.class)) hbox5.addItem(personaje);
         });
         JComboBox<Personaje> hbox6 = new JComboBox<>(); hbox6.setPreferredSize(dim2);
         hbox6.addItem(sample);
-        Personaje.presets.forEach(personaje -> {
+        Arrays.stream(Personaje.presetsBestias).forEach(personaje -> {
             if (personaje.getTipo().getSuperclass().equals(Bestia.class)) hbox6.addItem(personaje);
         });
 
@@ -193,9 +199,9 @@ public class VentanaDeConfiguracion extends JFrame {
         tfbox.addItemListener(e -> {
             if (((String) e.getItem()).contains(" ")) {
                 String[] s = ((String) e.getItem()).split(" ");
-                fondo = CampoDeBatalla.fondosBasicos.get(Integer.parseInt(s[1]));
+                fondo = CampoDeBatalla.fondosBasicos[Integer.parseInt(s[1]) - 1];
                 if (fondo == null) {
-                    fondo = CampoDeBatalla.fondosBasicos.get(1);
+                    fondo = CampoDeBatalla.fondosBasicos[1];
                     VentanaDeInformacion.mostrarVentana(VentanaDeInformacion.ERROR, "Error", "Este fondo no existe, se ha seleccionado de nuevo el valor por defecto.");
                     tfbox.setSelectedItem(f1);
                 }
@@ -210,7 +216,7 @@ public class VentanaDeConfiguracion extends JFrame {
                     throw new IOException("No se pudo leer la imagen, o no existe.");
                 } catch (IOException ex) {
                     VentanaDeInformacion.mostrarVentana(VentanaDeInformacion.ERROR, "Error al leer", "Formato no compatible, se ha seleccionado el fondo por defecto.");
-                    fondo = CampoDeBatalla.fondosBasicos.get(1);
+                    fondo = CampoDeBatalla.fondosBasicos[1];
                     tfbox.setSelectedItem(f1);
                 }
             }
@@ -259,7 +265,9 @@ public class VentanaDeConfiguracion extends JFrame {
             VentanaPrincipal.comenzar.setEnabled(true);
             VentanaDeConfiguracion.this.setVisible(false);
         });
+        // Inicialización UI finalización.
 
+        // Configuración ventana comienzo.
         add(guardar);
         add(random);
         add(label);
@@ -333,10 +341,10 @@ public class VentanaDeConfiguracion extends JFrame {
         layout.putConstraint(SpringLayout.WEST, tfbox, 85, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, fcustom, 340, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.WEST, fcustom, 408, SpringLayout.WEST, this);
-
         setLocationRelativeTo(null);
-
         pack();
+        // Configuración ventana fin.
+
         setVisible(true);
     }
 
@@ -344,6 +352,9 @@ public class VentanaDeConfiguracion extends JFrame {
         return posiciones.get(1) != null && posiciones.get(2) != null && posiciones.get(3) != null && posiciones.get(4) != null && posiciones.get(5) != null && posiciones.get(6) != null && fondo != null && posiciones.get(1).getEntidad() != null && posiciones.get(2).getEntidad() != null && posiciones.get(3).getEntidad() != null && posiciones.get(4).getEntidad() != null && posiciones.get(5).getEntidad() != null && posiciones.get(6).getEntidad() != null;
     }
 
+    /**
+     * Diálogo para configurar personaje.
+     */
     private static class CustomCharacterConfigurator extends JFrame implements ItemListener {
 
         private final Personaje personaje = new Personaje();
@@ -462,8 +473,7 @@ public class VentanaDeConfiguracion extends JFrame {
             layout.putConstraint(SpringLayout.NORTH, guardar, 240, SpringLayout.NORTH, this);
             layout.putConstraint(SpringLayout.WEST, guardar, 120, SpringLayout.WEST, this);
 
-            setLocationRelativeTo(null);
-
+            setLocationRelativeTo(null); // Centrar
             pack();
             setVisible(true);
         }
@@ -480,6 +490,9 @@ public class VentanaDeConfiguracion extends JFrame {
         }
     }
 
+    /**
+     * Diálogo para definir características de los personajes.
+     */
     class GenerarEntidad extends JFrame {
 
         private final int posicion;
@@ -544,7 +557,7 @@ public class VentanaDeConfiguracion extends JFrame {
             layout.putConstraint(SpringLayout.NORTH, okButton, 210, SpringLayout.NORTH, this);
 
             pack();
-            setLocationRelativeTo(null);
+            setLocationRelativeTo(null); // Centrar
             setVisible(true);
         }
 
@@ -575,6 +588,10 @@ public class VentanaDeConfiguracion extends JFrame {
             }
         }
 
+        /**
+         * Comprobar información.
+         * @return true si la información es correcta/válida.
+         */
         private boolean esValido() {
             return vida.getText().matches("[0-9]+") && resistencia.getText().matches("[0-9]+") && Integer.parseInt(vida.getText()) >= 50 && Integer.parseInt(vida.getText()) <= 500 && Integer.parseInt(resistencia.getText()) >= 10 && Integer.parseInt(resistencia.getText()) <= 60;
         }

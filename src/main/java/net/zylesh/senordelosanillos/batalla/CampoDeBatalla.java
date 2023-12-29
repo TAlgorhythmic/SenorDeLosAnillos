@@ -6,6 +6,8 @@ import net.zylesh.senordelosanillos.common.Bestia;
 import net.zylesh.senordelosanillos.common.Entidad;
 import net.zylesh.senordelosanillos.common.Heroe;
 import net.zylesh.senordelosanillos.common.Personaje;
+import net.zylesh.senordelosanillos.common.debuffos.DeBuffo;
+import net.zylesh.senordelosanillos.common.debuffos.TurnoDebuffo;
 import net.zylesh.senordelosanillos.juego.GameWindow;
 import net.zylesh.senordelosanillos.ui.VentanaDeInformacion;
 import net.zylesh.senordelosanillos.ui.VentanaPrincipal;
@@ -16,15 +18,16 @@ import java.util.*;
 
 public final class CampoDeBatalla {
 
-    public static final Map<Integer, File> fondosBasicos = new HashMap<>();
+    // Fondos predefinidos. En la configuración se puede usar un fondo propio también. Lo cambié a un array ya que no se por qué motivo usé un hashmap en un caso así.
+    public static final File[] fondosBasicos = new File[3];
     static {
         try {
             File background1 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background1.jpg").toURI());
             File background2 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background2.jpg").toURI());
             File background3 = new File(CampoDeBatalla.class.getClassLoader().getResource("assets" + File.separator + "juego" + File.separator + "fondos" + File.separator + "background3.jpg").toURI());
-            fondosBasicos.put(1, background1);
-            fondosBasicos.put(2, background2);
-            fondosBasicos.put(3, background3);
+            fondosBasicos[0] = background1;
+            fondosBasicos[1] = background2;
+            fondosBasicos[2] = background3;
         } catch (Exception e) {
             Core.log(e.getMessage(), true);
             VentanaDeInformacion.mostrarVentana(VentanaDeInformacion.ERROR, "Error", "El archivo del ejecutable probablemente esté corrupto/haya sido modificado.");
@@ -33,56 +36,21 @@ public final class CampoDeBatalla {
 
     private static final Random r = new Random();
 
+    /**
+     * La función que se ejecuta al darle click al botón "Todo Aleatorio".
+     * Hice algunos cambiós aquí también, los loops while no tenían ningún sentido al igual que los iteradores for,
+     * guardando la posición actual todo y saber exactamente cuantos elementos hay.
+     * @return La configuración generada.
+     */
     public static Configuracion generarConfig() {
-        Personaje ph1 = null;
-        Personaje ph2 = null;
-        Personaje ph3 = null;
-        int max = 6;
-        int from = 0;
-        int random = r.nextInt(max);
-        int i = from;
-        int position = 1;
-        while (ph1 == null || ph2 == null || ph3 == null) {
-            for (Personaje p : Personaje.presets) {
-                if (i == random) {
-                    switch (position) {
-                        case 1: ph1 = p; break;
-                        case 2: ph2 = p; break;
-                        case 3: ph3 = p; break;
-                    }
-                    position++;
-                    i = from;
-                    break;
-                }
-                i++;
-            }
-            random = r.nextInt(max);
-        }
-
-        Personaje pb1 = null;
-        Personaje pb2 = null;
-        Personaje pb3 = null;
-        from = 6;
-        i = from;
-        random = r.nextInt(max) + 4;
-        position = 1;
-        while (pb1 == null || pb2 == null || pb3 == null) {
-            for (Personaje p : Personaje.presets) {
-                if (!p.getTipo().getSuperclass().equals(Bestia.class)) continue;
-                if (i == random) {
-                    switch (position) {
-                        case 1: pb1 = p; break;
-                        case 2: pb2 = p; break;
-                        case 3: pb3 = p; break;
-                    }
-                    position++;
-                    i = from;
-                    break;
-                }
-                i++;
-            }
-            random = r.nextInt(max) + 4;
-        }
+        int max = Personaje.presetsHeroes.length;
+        Personaje ph1 = Personaje.presetsHeroes[r.nextInt(max)];
+        Personaje ph2 = Personaje.presetsHeroes[r.nextInt(max)];
+        Personaje ph3 = Personaje.presetsHeroes[r.nextInt(max)];
+        max = Personaje.presetsBestias.length;
+        Personaje pb1 = Personaje.presetsBestias[r.nextInt(max)];
+        Personaje pb2 = Personaje.presetsBestias[r.nextInt(max)];
+        Personaje pb3 = Personaje.presetsBestias[r.nextInt(max)];
         File fondo = fondoAleatorio();
         Heroe heroe1 = (Heroe) generarEntidadAleatoriamente(ph1);
         Heroe heroe2 = (Heroe) generarEntidadAleatoriamente(ph2);
@@ -107,16 +75,16 @@ public final class CampoDeBatalla {
     }
 
     private static File fondoAleatorio() {
-        int num = r.nextInt(3) + 1;
-        return fondosBasicos.get(num);
+        int num = r.nextInt(3);
+        return fondosBasicos[num];
     }
 
     private final static Map<Integer, Heroe> equipoHeroes = new LinkedHashMap<>();
     private final static Map<Integer, Bestia> equipoBestias = new LinkedHashMap<>();
     private int turno = 0;
-    private File fondo;
+    private final File fondo;
     private Entidad entidadEnAccion;
-    private static Timer timer = new Timer();
+    private static final Timer timer = new Timer();
 
     public File getFondo() {
         return fondo;
@@ -168,6 +136,9 @@ public final class CampoDeBatalla {
         }
     }
 
+    /**
+     * Este método se ejecuta recursivamente cada 3,5 segundos hasta que haya un equipo ganador.
+     */
     public void siguienteTurno() {
         if (GameWindow.g() == null) return;
         if (!getHeroe1().isAlive() && !getHeroe2().isAlive() && !getHeroe3().isAlive()) {
@@ -187,6 +158,7 @@ public final class CampoDeBatalla {
             else turno = 1;
         }
         this.entidadEnAccion = entidad;
+        for (DeBuffo deBuffo : this.entidadEnAccion.getDeBuffos()) if (deBuffo instanceof TurnoDebuffo) ((TurnoDebuffo) deBuffo).action(this.entidadEnAccion);
         Entidad victima = getVictima(turno);
         timer.schedule(new TimerTask() {
             @Override
@@ -197,12 +169,17 @@ public final class CampoDeBatalla {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                entidadEnAccion.atacarConOutput(victima);
+                if (entidadEnAccion.isAlive()) entidadEnAccion.atacarConOutput(victima);
+                else GameWindow.g().nuevoOutput(entidadEnAccion.getNombre() + " ha muerto a causa de su debuffo de turno, por lo cual se canceló su ataque.");
                 siguienteTurno();
             }
         }, 3500L);
     }
 
+    /**
+     * @param turno el turno actual
+     * @return la victima a la que debería atacar el personaje activo.
+     */
     public Entidad getVictima(int turno) {
         switch (turno) {
             case 1: return equipoBestias.get(4).isAlive() ? equipoBestias.get(4) : equipoBestias.get(5).isAlive() ? equipoBestias.get(5) : equipoBestias.get(6).isAlive() ? equipoBestias.get(6) : null;
@@ -250,6 +227,10 @@ public final class CampoDeBatalla {
             VentanaPrincipal.cerrar.setEnabled(true);
         }
 
+        /**
+         * Cargar configuración.
+         * @param config el objeto de configuración.
+         */
         public static void load(Configuracion config) {
             addHeroe(1, config.getHeroe1());
             addHeroe(2, config.getHeroe2());

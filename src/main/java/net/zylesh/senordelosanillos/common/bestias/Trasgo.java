@@ -7,6 +7,5 @@ public final class Trasgo extends Bestia {
 
     public Trasgo(Personaje personaje, int vida, int resistencia) {
         super(personaje, vida, resistencia);
-        this.identificadorTipo = "Trasgo";
     }
 }
