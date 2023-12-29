@@ -7,6 +7,5 @@ public final class Humano extends Heroe {
 
     public Humano(Personaje personaje, int vida, int resistencia) {
         super(personaje, vida, resistencia);
-        this.identificadorTipo = "Humano";
     }
 }

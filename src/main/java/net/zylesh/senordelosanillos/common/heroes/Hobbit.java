@@ -9,7 +9,6 @@ public final class Hobbit extends Heroe {
 
     public Hobbit(Personaje personaje, int vida, int resistencia) {
         super(personaje, vida, resistencia);
-        this.identificadorTipo = "Hobbit";
         this.habilidades.add(new Habilidad("Miedo") {
             @Override
             public int extraDamage() {

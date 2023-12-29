@@ -1,7 +1,6 @@
 package net.zylesh.senordelosanillos.ui;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -9,7 +9,6 @@ public final class Elfo extends Heroe {
 
     public Elfo(Personaje personaje, int vida, int resistencia) {
         super(personaje, vida, resistencia);
-        this.identificadorTipo = "Elfo";
         this.habilidades.add(new Habilidad("Odio") {
             @Override
             public int extraDamage() {
